@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Salvar URL",
+  "version": "1.0",
+  "description" : "Salva a URL atual no Easy Recruter",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "identity"
+  ],
+  "background": {
+    "service_worker": "background.js",
+	"type" : "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+	"default_icon" : "images/icon128.png"
+  },
+  "host_permissions": [
+    "http://localhost/*"
+  ]
+}
