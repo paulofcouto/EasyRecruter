@@ -20,14 +20,14 @@ namespace Easy.Application.Queries.ObterCandidatosUsuarioLogado
 
         public async Task<Result<List<CandidatoViewModel>>> Handle(ObterCandidatosUsuarioLogadoQuery request, CancellationToken cancellationToken)
         {
-            var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var iUsuario = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(iUsuario))
             {
                 return Result<List<CandidatoViewModel>>.Fail("Usuário não autenticado.");
             }
 
-            var candidatos = await _candidatoRepository.ObterPorEmailDoUsuarioAssincrono(email);
+            var candidatos = await _candidatoRepository.ObterPorEmailDoUsuarioAssincrono(iUsuario);
 
             if (candidatos == null || !candidatos.Any())
             {

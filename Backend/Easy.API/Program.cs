@@ -60,6 +60,18 @@ builder.Services.AddSingleton<EasyDbContext>();
 //Mediator
 builder.Services.AddMediatR(t => t.RegisterServicesFromAssembly(typeof(CadastrarCandidatoCommandHandler).Assembly));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowChromeExtension", builder =>
+    {
+        builder
+            .WithOrigins("chrome-extension://ineffafedhljcjhecomdkajcemhkplfk")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 //FluentValidation
 builder.Services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CadastrarUsuarioCommandValidator>());
@@ -80,7 +92,22 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Falha na autenticação: " + context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("Token JWT validado com sucesso.");
+            return Task.CompletedTask;
+        }
+    };
 });
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
@@ -92,6 +119,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 

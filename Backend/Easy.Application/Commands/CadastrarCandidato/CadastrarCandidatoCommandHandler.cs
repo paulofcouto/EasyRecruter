@@ -1,5 +1,4 @@
-﻿using Easy.Application.ViewModel;
-using Easy.Core.Entities;
+﻿using Easy.Core.Entities;
 using Easy.Core.Repository;
 using Easy.Core.Result;
 using MediatR;
@@ -21,14 +20,20 @@ namespace Easy.Application.Commands.CadastrarCandidato
 
         public async Task<Result> Handle(CadastrarCandidatoCommand request, CancellationToken cancellationToken)
         {
-            var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var idUsuario = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(idUsuario))
             {
                 return Result.Fail("Usuário não autenticado.");
             }
 
-            var candidato = new Candidato(request.URLPublica, email, request.Nome, request.Cargo);
+            var lista = new List<Candidato.Experiencia>();
+            var experiencia = new Candidato.Experiencia("", "", new DateTime(2024, 10, 1), new DateTime(2024,10,1), "", "");
+
+            lista.Add(experiencia);
+
+
+            var candidato = new Candidato(idUsuario, request.URLPublica, request.Nome, request.Cargo , "", lista, new List<Candidato.Formacao>());
             
             await _candidatoRepository.CadastrarAssincrono(candidato);
 

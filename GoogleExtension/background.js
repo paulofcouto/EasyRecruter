@@ -13,9 +13,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
           chrome.tabs.sendMessage(currentTab.id, { action: 'captureData' }, (response) => {
 			
-			console.log(response.dadosCapturados.nome);
             const urlData = {
-              url: currentTab.url,
+              urlPublica: currentTab.url,
               nome: response.dadosCapturados.nome,
               cargo: response.dadosCapturados.cargo,
               sobre: response.dadosCapturados.sobre,
@@ -26,20 +25,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 local: exp.local,
                 descricao: exp.descricao
               })), 
-              formacaoAcademica: response.dadosCapturados.formacaoAcademica.map(form => ({
+              formacoes: response.dadosCapturados.formacaoAcademica.map(form => ({
                 instituicao: form.instituicao,
                 curso: form.curso,
                 periodo: form.periodo
               })) 
             };
 
-            fetch('http://localhost:5214/SalvarUrl', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(urlData)
-            })
+			fetch('https://localhost:8000/api/v1/CandidatoExterno/SalvarDados', {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Njc2MmFmMWMxMjc1ZDQyOWM1ZDg2MGIiLCJlbWFpbCI6InBhdWxvZmVybmFuZGVzY291dG9AZ21haWwuY29tIiwibmJmIjoxNzI5NTQ1Mjc3LCJleHAiOjE3Mjk1ODg0NzcsImlhdCI6MTcyOTU0NTI3N30.T-eImUtbnIAG_FYDQ--5nMTOV6_1ND7_B98w0_alwiw'
+			  },
+			  body: JSON.stringify(urlData)
+			})
             .then(res => {
               if (!res.ok) {
                 throw new Error(`Erro na requisição: ${res.status}`);

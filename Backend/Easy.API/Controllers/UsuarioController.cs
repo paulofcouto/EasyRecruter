@@ -1,7 +1,5 @@
 ﻿using Easy.Application.Commands.CadastrarUsuario;
-using Easy.Application.Queries.LoginUsuario;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Easy.API.Controllers

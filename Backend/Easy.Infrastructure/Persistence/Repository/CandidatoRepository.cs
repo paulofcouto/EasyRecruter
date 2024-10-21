@@ -28,7 +28,7 @@ namespace Easy.Infrastructure.Persistence.Repository
             var filter = Builders<Candidato>.Filter.Eq(c => c.Id, candidato.Id);
             var update = Builders<Candidato>.Update
                 .Set(c => c.UrlPublica, candidato.UrlPublica)
-                .Set(c => c.EmailUsuario, candidato.EmailUsuario)
+                .Set(c => c.IdUsuario, candidato.IdUsuario)
                 .Set(c => c.Nome, candidato.Nome)
                 .Set(c => c.Cargo, candidato.Cargo);
 
@@ -40,9 +40,9 @@ namespace Easy.Infrastructure.Persistence.Repository
             return await _candidatos.Find(_ => true).ToListAsync();
         }
 
-        public async Task<List<Candidato>> ObterPorEmailDoUsuarioAssincrono(string email)
+        public async Task<List<Candidato>> ObterPorEmailDoUsuarioAssincrono(string idUsuario)
         {
-            return await _candidatos.Find(t => t.EmailUsuario == email).ToListAsync();
+            return await _candidatos.Find(t => t.IdUsuario == idUsuario).ToListAsync();
         }
 
         public async Task DeletarPorIdAssincrono(string id)

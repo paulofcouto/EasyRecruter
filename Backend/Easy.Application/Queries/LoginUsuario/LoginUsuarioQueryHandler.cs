@@ -21,6 +21,7 @@ namespace Easy.Application.Queries.LoginUsuario
         {
             var usuario = await _usuarioRepository.ObterPorEmailAssincrono(request.Email);
 
+            //ToDoMVP = Criptografar as senhas
             if (usuario == null || request.Senha != usuario.SenhaHash)
             {
                 return Result<AuthResponse>.Fail("Credenciais inválidas");

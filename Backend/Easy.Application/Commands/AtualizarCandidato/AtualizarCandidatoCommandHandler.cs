@@ -20,14 +20,14 @@ namespace Easy.Application.Commands.AtualizarCandidato
 
         public async Task<Result> Handle(AtualizarCandidatoCommand request, CancellationToken cancellationToken)
         {
-            var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var idUsuario = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(idUsuario))
             {
                 return Result.Fail("Usuário não autenticado.");
             }
 
-            var candidato = new Candidato(request.UrlPublica, email, request.Nome, request.Cargo);
+            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.Cargo, "", new List<Candidato.Experiencia>(), new List<Candidato.Formacao>());
 
             await _candidatoRepository.EditarAssincrono(candidato);
 

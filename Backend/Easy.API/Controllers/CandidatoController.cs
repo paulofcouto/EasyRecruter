@@ -5,7 +5,6 @@ using Easy.Application.Queries.ObterCandidatoPorId;
 using Easy.Application.Queries.ObterCandidatosUsuarioLogado;
 using Easy.Application.ViewModel;
 using Easy.Core.Entities;
-using Easy.Core.Result;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
