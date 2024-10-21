@@ -4,9 +4,10 @@
   "version": "1.0",
   "description" : "Salva a URL atual no Easy Recruter",
   "permissions": [
-    "storage",
-    "activeTab",
+	"tabs", 
+    "activeTab",  
     "scripting",
+    "storage",
     "identity"
   ],
   "background": {

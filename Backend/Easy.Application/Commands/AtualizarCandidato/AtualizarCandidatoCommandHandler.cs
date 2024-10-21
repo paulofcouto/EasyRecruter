@@ -1,15 +1,9 @@
-﻿using Easy.Application.Commands.CadastrarCandidato;
-using Easy.Core.Entities;
+﻿using Easy.Core.Entities;
 using Easy.Core.Repository;
 using Easy.Core.Result;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Easy.Application.Commands.AtualizarCandidato
 {
