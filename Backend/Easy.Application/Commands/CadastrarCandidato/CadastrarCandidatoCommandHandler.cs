@@ -28,7 +28,7 @@ namespace Easy.Application.Commands.CadastrarCandidato
             }
 
             var lista = new List<Candidato.Experiencia>();
-            var experiencia = new Candidato.Experiencia("", "", new DateTime(2024, 10, 1), new DateTime(2024,10,1), "", "");
+            var experiencia = new Candidato.Experiencia("", "", new List<Candidato.Cargo>());
 
             lista.Add(experiencia);
 

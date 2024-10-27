@@ -7,9 +7,9 @@ function capturarPerfilCompleto() {
   perfil.nome = nomeElement ? nomeElement.innerText.trim() : 'Nome não encontrado';
 
   const cargoElemento = document.querySelector('.text-body-medium.break-words');
-  perfil.cargo = cargoElemento ? cargoElemento.innerText.trim() : 'Cargo não encontrado';
+  perfil.descricaoProfissional = cargoElemento ? cargoElemento.innerText.trim() : 'Descrição profissional não encontrado';
 
-  perfil.sobre = capturarTextoComQuebras();
+  perfil.sobre = capturarTextoSobre();
 
   perfil.experiencias = capturarExperiencias();
 
@@ -18,7 +18,7 @@ function capturarPerfilCompleto() {
   return perfil;
 }
 
-function capturarTextoComQuebras() {
+function capturarTextoSobre() {
   const section = Array.from(document.querySelectorAll('section.artdeco-card.pv-profile-card.break-words.mt2'))
     .find(sec => sec.querySelector('div#about.pv-profile-card__anchor'));
 
@@ -54,28 +54,70 @@ function capturarExperiencias() {
         listaLi.forEach((li) => {
           const experiencia = {};
 
-          const cargoElement = li.querySelector('.display-flex.align-items-center.mr1.t-bold span.visually-hidden');
-          experiencia.cargo = cargoElement ? cargoElement.innerText.trim() : 'Cargo não encontrado';
+          const hasMultipleCargos = li.querySelector('.display-flex.align-items-center.mr1.hoverable-link-text.t-bold') !== null;
 
-          const empresaElement = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal span.visually-hidden');
-          experiencia.empresa = empresaElement ? empresaElement.innerText.trim() : 'Empresa não encontrada';
+          if (hasMultipleCargos) {
+            const empresaElement = li.querySelector('.display-flex.align-items-center.mr1.hoverable-link-text.t-bold span.visually-hidden');
+			experiencia.empresa = empresaElement ? empresaElement.innerText.trim() : 'Empresa não encontrada';
 
-          const dataElement = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden');
-          experiencia.periodo = dataElement ? dataElement.innerText.trim() : 'Período não encontrado';
+			const localElement = Array.from(li.querySelectorAll('.t-14.t-normal.t-black--light'))
+			  .map(span => {
+				const visuallyHidden = span.querySelector('span.visually-hidden');
+				const ariaHidden = span.querySelector('span[aria-hidden="true"]');
 
-          const spansLocal = li.querySelectorAll('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden');
-          experiencia.local = spansLocal.length > 1 ? spansLocal[1].innerText.trim() : 'Local não encontrado';
+				if (visuallyHidden && ariaHidden && visuallyHidden.innerText.trim() === ariaHidden.innerText.trim()) {
+				  return visuallyHidden;
+				}
+				return null;
+			  })
+			  .filter(span => span !== null)
+			  .pop();
+			experiencia.local = localElement ? localElement.innerText.trim() : 'Local não encontrado';
 
-          const atribuicaoElement = li.querySelector('.pvs-entity__sub-components span.visually-hidden');
-          experiencia.descricao = atribuicaoElement ? atribuicaoElement.innerText.trim() : 'Descrição não encontrada';
+			experiencia.cargos = [];
 
-          experiencias.push(experiencia);
+			const cargosList = Array.from(li.querySelectorAll('ul > li')).filter(subLi => {
+			  return subLi.querySelector('div[data-view-name="profile-component-entity"]') !== null;
+			});
+
+			cargosList.forEach(subLi => {
+			  const cargo = {};
+
+			  const tituloElement = subLi.querySelector('.display-flex.align-items-center.mr1.hoverable-link-text.t-bold span[aria-hidden="true"]');
+			  cargo.titulo = tituloElement ? tituloElement.innerText.trim() : 'Cargo não encontrado';
+
+			  const periodoElement = subLi.querySelector('.t-14.t-normal.t-black--light span.visually-hidden');
+			  cargo.periodo = periodoElement ? periodoElement.innerText.trim() : 'Período não encontrado';
+
+			  const descricaoElement = subLi.querySelector('.full-width.t-14.t-normal.t-black.display-flex.align-items-center span.visually-hidden');
+			  cargo.descricao = descricaoElement ? descricaoElement.innerText.trim() : 'Descrição não encontrada';
+
+			  if (cargo.titulo && cargo.periodo && cargo.descricao) {
+			    experiencia.cargos.push(cargo);
+			  }
+			});
+          } 
+		  else {
+			experiencia.empresa = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal span.visually-hidden')?.innerText.trim() || 'Empresa não encontrada';
+            
+			experiencia.local = li.querySelectorAll('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')[1]?.innerText.trim() || 'Local não encontrado';
+			
+			experiencia.cargos = [{
+              titulo: li.querySelector('.display-flex.align-items-center.mr1.t-bold span.visually-hidden')?.innerText.trim() || 'Cargo não encontrado',
+              periodo: li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')?.innerText.trim() || 'Período não encontrado',
+              descricao: li.querySelector('.pvs-entity__sub-components span.visually-hidden')?.innerText.trim() || 'Descrição não encontrada'
+            }];
+          }
+		  
+		  experiencias.push(experiencia);
         });
       }
     }
   }
+  
   return experiencias;
 }
+
 
 // Função para capturar a Formação Acadêmica
 function capturarFormacaoAcademica() {

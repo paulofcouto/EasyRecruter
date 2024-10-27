@@ -13,30 +13,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
           chrome.tabs.sendMessage(currentTab.id, { action: 'captureData' }, (response) => {
 			
-            const urlData = {
-              urlPublica: currentTab.url,
-              nome: response.dadosCapturados.nome,
-              cargo: response.dadosCapturados.cargo,
-              sobre: response.dadosCapturados.sobre,
-              experiencias: response.dadosCapturados.experiencias.map(exp => ({
-                cargo: exp.cargo,
-                empresa: exp.empresa,
-                periodo: exp.periodo,
-                local: exp.local,
-                descricao: exp.descricao
-              })), 
-              formacoes: response.dadosCapturados.formacaoAcademica.map(form => ({
-                instituicao: form.instituicao,
-                curso: form.curso,
-                periodo: form.periodo
-              })) 
-            };
+			const urlData = {
+			  urlPublica: currentTab.url,
+			  nome: response.dadosCapturados.nome,
+			  descricaoProfissional: response.dadosCapturados.descricaoProfissional,
+			  sobre: response.dadosCapturados.sobre,
+			  experiencias: response.dadosCapturados.experiencias.map(exp => ({
+				empresa: exp.empresa,
+				local: exp.local,
+				cargos: exp.cargos.map(cargo => ({
+				  titulo: cargo.titulo,
+				  periodo: cargo.periodo,
+				  descricao: cargo.descricao
+				}))
+			  })),
+			  formacoes: response.dadosCapturados.formacaoAcademica.map(form => ({
+				instituicao: form.instituicao,
+				curso: form.curso,
+				periodo: form.periodo
+			  }))
+			};
 
 			fetch('https://localhost:8000/api/v1/CandidatoExterno/SalvarDados', {
 			  method: 'POST',
 			  headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Njc2MmFmMWMxMjc1ZDQyOWM1ZDg2MGIiLCJlbWFpbCI6InBhdWxvZmVybmFuZGVzY291dG9AZ21haWwuY29tIiwibmJmIjoxNzI5NTQ1Mjc3LCJleHAiOjE3Mjk1ODg0NzcsImlhdCI6MTcyOTU0NTI3N30.T-eImUtbnIAG_FYDQ--5nMTOV6_1ND7_B98w0_alwiw'
+				'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Njc2MmFmMWMxMjc1ZDQyOWM1ZDg2MGIiLCJlbWFpbCI6InBhdWxvZmVybmFuZGVzY291dG9AZ21haWwuY29tIiwibmJmIjoxNzMwMDYyODYwLCJleHAiOjE3MzAxMDYwNjAsImlhdCI6MTczMDA2Mjg2MH0.rr11fmjh8cmHjoPBiqsFYgdFAlOAUqAlII4HGlWJLdY'
 			  },
 			  body: JSON.stringify(urlData)
 			})

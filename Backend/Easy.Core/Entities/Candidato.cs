@@ -5,12 +5,12 @@ namespace Easy.Core.Entities
 {
     public class Candidato : BaseEntity
     {
-        public Candidato(string idUsuario, string urlPublica, string nome, string cargo, string sobre, List<Experiencia> experiencias, List<Formacao> formacoesAcademicas)
+        public Candidato(string idUsuario, string urlPublica, string nome, string descricaoProfissional, string sobre, List<Experiencia> experiencias, List<Formacao> formacoesAcademicas)
         {
             IdUsuario = idUsuario;
             UrlPublica = urlPublica;
             Nome = nome;
-            Cargo = cargo;
+            DescricaoProfissional = descricaoProfissional;
             Sobre = sobre;
             Experiencias = experiencias;
             Formacoes = formacoesAcademicas;
@@ -20,29 +20,38 @@ namespace Easy.Core.Entities
         public string IdUsuario { get; private set; }
         public string UrlPublica { get; private set; }
         public string Nome { get; private set; }
-        public string Cargo { get; private set; }
+        public string DescricaoProfissional { get; private set; }
         public string Sobre { get; private set; }
         public List<Experiencia> Experiencias { get; private set; }
         public List<Formacao> Formacoes { get; private set; }
 
         public class Experiencia
         {
-            public Experiencia(string cargo, string empresa, DateTime dataInicial, DateTime dataFinal,
-                               string local, string descricao)
+            public Experiencia(string empresa,string local, List<Cargo> listaCargos)
             {
-                Cargo = cargo;
+                Cargos = listaCargos;
                 Empresa = empresa;
+                Local = local;
+            }
+            
+            public string Empresa { get; private set; }
+            public string Local { get; private set; }
+            public List<Cargo> Cargos { get; private set; }
+        }
+
+        public class Cargo
+        {
+            public Cargo(string titulo, DateTime dataInicial, DateTime dataFinal, string descricao)
+            {
+                Titulo = titulo;
                 DataInicial = dataInicial;
                 DataFinal = dataFinal;
-                Local = local;
                 Descricao = descricao;
             }
 
-            public string Cargo { get; private set; }
-            public string Empresa { get; private set; }
+            public string Titulo { get; private set; }
             public DateTime DataInicial { get; private set; }
             public DateTime DataFinal { get; private set; }
-            public string Local { get; private set; }
             public string Descricao { get; private set; }
         }
 

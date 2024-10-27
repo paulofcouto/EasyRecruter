@@ -24,7 +24,7 @@ namespace Easy.Application.Queries.ObterCandidatoPorId
                 return Result<CandidatoDetalhadoViewModel>.Fail("Usuário não encontrado");
             }
 
-            var candidatoViewModel= new CandidatoDetalhadoViewModel(candidato.Id, candidato.UrlPublica, candidato.Nome, candidato.Cargo);
+            var candidatoViewModel= new CandidatoDetalhadoViewModel(candidato.Id, candidato.UrlPublica, candidato.Nome, candidato.DescricaoProfissional);
 
             return Result<CandidatoDetalhadoViewModel>.Ok(candidatoViewModel);
         }

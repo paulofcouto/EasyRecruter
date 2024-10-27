@@ -30,7 +30,7 @@ namespace Easy.Infrastructure.Persistence.Repository
                 .Set(c => c.UrlPublica, candidato.UrlPublica)
                 .Set(c => c.IdUsuario, candidato.IdUsuario)
                 .Set(c => c.Nome, candidato.Nome)
-                .Set(c => c.Cargo, candidato.Cargo);
+                .Set(c => c.DescricaoProfissional, candidato.DescricaoProfissional);
 
             await _candidatos.UpdateOneAsync(filter, update);
         }

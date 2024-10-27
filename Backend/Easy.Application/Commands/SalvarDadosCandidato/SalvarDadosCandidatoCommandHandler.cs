@@ -4,7 +4,6 @@ using Easy.Core.Result;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Easy.Application.Commands.SalvarDadosCandidato
 {
@@ -42,21 +41,37 @@ namespace Easy.Application.Commands.SalvarDadosCandidato
 
             var listaExperiencias = new List<Candidato.Experiencia>();
 
-            //ToDoMVP
             foreach(var experiencia in request.Experiencias)
             {
+                var listaCargos = new List<Candidato.Cargo>();
 
+                foreach (var cargo in experiencia.Cargos)
+                {
+                    StringHelpers.ExtrairDatasLinkedin(cargo.Periodo, out DateTime dataInicial, out DateTime dataFinal);
+
+                    var cargoCandidato = new Candidato.Cargo(cargo.Titulo, dataInicial, dataFinal, cargo.Descricao);
+
+                    listaCargos.Add(cargoCandidato);
+                }
+
+                var expecienciaCandidato = new Candidato.Experiencia(experiencia.Empresa, experiencia.Local, listaCargos);
+
+                listaExperiencias.Add(expecienciaCandidato);
             }
 
             var listaFormacoes = new List<Candidato.Formacao>();
 
-            //ToDoMVP
-            foreach (var experiencia in request.Formacoes)
+            foreach (var formacao in request.Formacoes)
             {
+                StringHelpers.ExtrairDatasLinkedin(formacao.Periodo, out DateTime dataInicial, out DateTime dataFinal);
+
+                var formacaoCandidato = new Candidato.Formacao(formacao.Instituicao, formacao.Curso, dataInicial, dataFinal);
+
+                listaFormacoes.Add(formacaoCandidato);
 
             }
 
-            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.Cargo, request.Sobre, listaExperiencias, listaFormacoes);
+            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
 
             await _candidatoRepository.CadastrarAssincrono(candidato);
 
