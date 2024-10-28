@@ -27,7 +27,7 @@ namespace Easy.Application.Queries.ObterCandidatosUsuarioLogado
                 return Result<List<CandidatoViewModel>>.Fail("Usuário não autenticado.");
             }
 
-            var candidatos = await _candidatoRepository.ObterPorEmailDoUsuarioAssincrono(iUsuario);
+            var candidatos = await _candidatoRepository.ObterPorIdDoUsuarioAssincrono(iUsuario);
 
             if (candidatos == null || !candidatos.Any())
             {

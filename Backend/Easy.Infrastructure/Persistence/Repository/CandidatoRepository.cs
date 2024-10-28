@@ -40,7 +40,7 @@ namespace Easy.Infrastructure.Persistence.Repository
             return await _candidatos.Find(_ => true).ToListAsync();
         }
 
-        public async Task<List<Candidato>> ObterPorEmailDoUsuarioAssincrono(string idUsuario)
+        public async Task<List<Candidato>> ObterPorIdDoUsuarioAssincrono(string idUsuario)
         {
             return await _candidatos.Find(t => t.IdUsuario == idUsuario).ToListAsync();
         }

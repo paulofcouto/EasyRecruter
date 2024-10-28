@@ -9,6 +9,6 @@ namespace Easy.Core.Repository
         Task EditarAssincrono(Candidato candidato);
         Task DeletarPorIdAssincrono(string id);
         Task<List<Candidato>> ObterTodosAssincrono();
-        Task<List<Candidato>> ObterPorEmailDoUsuarioAssincrono(string email);
+        Task<List<Candidato>> ObterPorIdDoUsuarioAssincrono(string email);
     }
 }
