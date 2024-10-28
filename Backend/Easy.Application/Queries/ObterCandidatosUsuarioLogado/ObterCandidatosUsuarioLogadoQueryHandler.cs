@@ -20,7 +20,7 @@ namespace Easy.Application.Queries.ObterCandidatosUsuarioLogado
 
         public async Task<Result<List<CandidatoViewModel>>> Handle(ObterCandidatosUsuarioLogadoQuery request, CancellationToken cancellationToken)
         {
-            var iUsuario = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var iUsuario = _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(iUsuario))
             {
