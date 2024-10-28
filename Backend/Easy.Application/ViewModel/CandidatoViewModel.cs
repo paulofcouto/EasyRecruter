@@ -10,11 +10,6 @@
             DescricaoProfissional = descricaoProfissional;
         }
 
-        public static CandidatoViewModel Create(string id, string urlPublica, string descricaoProfissional, string nome)
-        {
-            return new CandidatoViewModel(id, urlPublica, descricaoProfissional, nome);
-        }
-
         public string Id { get; private set; }
         public string UrlPublica { get; private set; }
         public string DescricaoProfissional { get; private set; }
