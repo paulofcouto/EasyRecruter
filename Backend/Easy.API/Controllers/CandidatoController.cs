@@ -1,6 +1,6 @@
-﻿using Easy.Application.Commands.AtualizarCandidato;
-using Easy.Application.Commands.CadastrarCandidato;
+﻿using Easy.Application.Commands.CadastrarCandidato;
 using Easy.Application.Commands.DeletarCandidato;
+using Easy.Application.Commands.EditarCandidato;
 using Easy.Application.Queries.ObterCandidatoPorId;
 using Easy.Application.Queries.ObterCandidatosUsuarioLogado;
 using Easy.Application.ViewModel;
@@ -38,8 +38,8 @@ namespace Easy.API.Controllers
         }
         
         //GET: api/candidato/5
-        [HttpGet("candidato/{id}")]
-        public async Task<ActionResult<CandidatoDetalhadoViewModel>> Get(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CandidatoDetalhadoViewModel>> Get([FromRoute] string id)
         {
             var query = new ObterCandidatoPorIdQuery(id);
 
@@ -58,7 +58,7 @@ namespace Easy.API.Controllers
         public async Task<ActionResult<Candidato>> Post([FromBody] CadastrarCandidatoCommand command)
         {
             var result = await _mediator.Send(command);
-
+        
             if (result.IsSuccess)
             {
                 return Ok("Candidato cadastrado com sucesso.");
@@ -69,19 +69,19 @@ namespace Easy.API.Controllers
                 {
                     return BadRequest(result.Error);
                 }
-
+        
                 return StatusCode(500, "Ocorreu um erro inesperado ao cadastrar o candidato.");
             }
         }
 
         // PUT: api/Candidato/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Candidato>> Put(string id, [FromBody] AtualizarCandidatoCommand command)
+        public async Task<ActionResult<Candidato>> Put([FromRoute] string id, [FromBody] EditarCandidatoCommand command)
         {
             command.Id = id;
             
             var result = await _mediator.Send(command);
-
+        
             if (result.IsSuccess)
             {
                 return Ok("Candidato alterado com sucesso.");
@@ -92,14 +92,14 @@ namespace Easy.API.Controllers
                 {
                     return BadRequest(result.Error);
                 }
-
+        
                 return StatusCode(500, "Ocorreu um erro inesperado ao editar o candidato.");
             }
         }
         
         // DELETE: api/Candidato/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete([FromRoute] string id)
         {
             var command = new DeletarCandidatoCommand(id);
 

@@ -9,10 +9,10 @@ namespace Easy.Application.Commands.SalvarDadosCandidato
         public string Nome { get; set; }
         public string DescricaoProfissional { get; set; }
         public string Sobre { get; set; }
-        public List<ExperienciaCommand> Experiencias { get; set; }
-        public List<FormacaoCommand> Formacoes { get; set; }
+        public List<SalvarExperienciaCommand> Experiencias { get; set; }
+        public List<SalvarFormacaoCommand> Formacoes { get; set; }
 
-        public class ExperienciaCommand
+        public class SalvarExperienciaCommand
         {
 
             public string Empresa { get; set; }
@@ -29,7 +29,7 @@ namespace Easy.Application.Commands.SalvarDadosCandidato
             public string Descricao { get; set; }
         }
 
-        public class FormacaoCommand
+        public class SalvarFormacaoCommand
         {
             public string Instituicao { get; set; }
             public string Curso { get; set; }

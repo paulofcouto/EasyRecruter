@@ -4,21 +4,24 @@ using Easy.Core.Result;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace Easy.Application.Commands.CadastrarCandidato
+namespace Easy.Application.Commands.EditarCandidato
 {
-    public class CadastrarCandidatoCommandHandler : IRequestHandler<CadastrarCandidatoCommand, Result>
+    public class EditarCandidatoCommandHandler : IRequestHandler<EditarCandidatoCommand, Result>
     {
         private readonly ICandidatoRepository _candidatoRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CadastrarCandidatoCommandHandler(ICandidatoRepository candidatoRepository, IHttpContextAccessor httpContextAccessor)
+        public EditarCandidatoCommandHandler(ICandidatoRepository candidatoRepository, IHttpContextAccessor httpContextAccessor)
         {
             _candidatoRepository = candidatoRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Result> Handle(CadastrarCandidatoCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(EditarCandidatoCommand request, CancellationToken cancellationToken)
         {
             var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers.Authorization.ToString();
 
@@ -39,6 +42,13 @@ namespace Easy.Application.Commands.CadastrarCandidato
                 return Result.Fail("Usuário não identificado no token.");
             }
 
+            var candidatoExistente = await _candidatoRepository.ObterPorIdAssincrono(request.Id);
+
+            if (candidatoExistente == null)
+            {
+                return Result.Fail("Candidato não encontrado.");
+            }
+
             var listaExperiencias = new List<Candidato.Experiencia>();
 
             foreach (var experiencia in request.Experiencias)
@@ -48,13 +58,11 @@ namespace Easy.Application.Commands.CadastrarCandidato
                 foreach (var cargo in experiencia.Cargos)
                 {
                     var cargoCandidato = new Candidato.Cargo(cargo.Titulo, cargo.DataInicial, cargo.DataFinal, cargo.Descricao);
-
                     listaCargos.Add(cargoCandidato);
                 }
 
-                var expecienciaCandidato = new Candidato.Experiencia(experiencia.Empresa, experiencia.Local, listaCargos);
-
-                listaExperiencias.Add(expecienciaCandidato);
+                var experienciaCandidato = new Candidato.Experiencia(experiencia.Empresa, experiencia.Local, listaCargos);
+                listaExperiencias.Add(experienciaCandidato);
             }
 
             var listaFormacoes = new List<Candidato.Formacao>();
@@ -62,14 +70,12 @@ namespace Easy.Application.Commands.CadastrarCandidato
             foreach (var formacao in request.Formacoes)
             {
                 var formacaoCandidato = new Candidato.Formacao(formacao.Instituicao, formacao.Curso, formacao.DataInicial, formacao.DataDeConclusao);
-
                 listaFormacoes.Add(formacaoCandidato);
-
             }
 
-            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
+            candidatoExistente.AtualizarInformacoes(request.UrlPublica, request.Nome, request.DescricaoProfissional, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
 
-            await _candidatoRepository.CadastrarAssincrono(candidato);
+            await _candidatoRepository.EditarAssincrono(candidatoExistente);
 
             return Result.Ok();
         }

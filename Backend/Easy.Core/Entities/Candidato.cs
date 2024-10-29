@@ -25,6 +25,11 @@ namespace Easy.Core.Entities
         public List<Experiencia> Experiencias { get; private set; }
         public List<Formacao> Formacoes { get; private set; }
 
+        public void AtualizarInformacoes(string urlPublica, string nome, string descricaoProfissional, string v, List<Experiencia> listaExperiencias, List<Formacao> listaFormacoes)
+        {
+            throw new NotImplementedException();
+        }
+
         public class Experiencia
         {
             public Experiencia(string empresa,string local, List<Cargo> listaCargos)
