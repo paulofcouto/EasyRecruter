@@ -21,5 +21,12 @@
   "host_permissions": [
     "http://localhost/*",
     "https://localhost/*"
+  ],
+  "content_scripts": [
+	{
+		"matches": ["https://www.linkedin.com/*"],
+		"js": ["scripts/contentScript.js"],
+        "run_at": "document_idle"
+	}
   ]
 }

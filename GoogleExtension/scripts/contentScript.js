@@ -3,7 +3,7 @@ function capturarPerfilCompleto() {
 
   perfil.URL = window.location.href;
 
-  const nomeElement = document.querySelector('.text-heading-xlarge');
+  const nomeElement = document.querySelector('.v-align-middle.break-words');
   perfil.nome = nomeElement ? nomeElement.innerText.trim() : 'Nome não encontrado';
 
   const cargoElemento = document.querySelector('.text-body-medium.break-words');
@@ -156,12 +156,9 @@ function capturarFormacaoAcademica() {
   return formacaoAcademica;
 }
 
-// Captura o perfil completo
-const perfilCompleto = capturarPerfilCompleto();
-
-// Enviar os dados capturados de volta para o background.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'captureData') {
-    sendResponse({ dadosCapturados: perfilCompleto });
+    const perfil = capturarPerfilCompleto();
+    sendResponse({ dadosCapturados: perfil });
   }
 });
