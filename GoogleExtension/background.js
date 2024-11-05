@@ -67,7 +67,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                                     periodo: form.periodo
                                 }))
                             };
-
+							
+					
                             fetch('https://localhost:8000/api/v1/CandidatoExterno/SalvarDados', {
                                     method: 'POST',
                                     headers: {
@@ -76,31 +77,62 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                                     },
                                     body: JSON.stringify(urlData)
                                 })
-                                .then(res => {
-									// Verifique o tipo de conteúdo antes de tentar processar como JSON
+								.then(res => {
 									const contentType = res.headers.get('content-type');
-									if (!res.ok) {
-										throw new Error(`Erro na requisição: ${res.status}`);
-									}
+									
 									if (contentType && contentType.includes('application/json')) {
-										return res.json();
+										return res.json().then(data => {
+											if (!res.ok) {
+												if (data.errors) {
+													const errorMessages = Object.entries(data.errors)
+														.map(([key, value]) => `${key}: ${value.join(', ')}`)
+														.join('\n- ');
+													throw new Error(errorMessages);
+												}
+												throw new Error('Erro desconhecido.');
+											}
+											return data;
+										});
 									} else {
-										return res.text(); // Retorna como texto se não for JSON
+										return res.text().then(text => {
+											if (!res.ok) {
+												throw new Error(text || 'Erro desconhecido');
+											}
+											return text;
+										});
 									}
 								})
 								.then(data => {
-									console.log('Resposta da API:', data);
 									sendResponse({
 										status: 'sucesso',
 										dados: data
 									});
 								})
 								.catch(err => {
-									console.error('Erro ao enviar para a API:', err);
-									sendResponse({
-										status: 'erro',
-										mensagem: err.message
-									});
+									try {
+										const parsedError = JSON.parse(err.message);
+										if (parsedError.errors) {
+											const errorMessages = Object.entries(parsedError.errors)
+												.map(([key, value]) => `${key}: ${value.join(', ')}`)
+												.join('\n- ');
+											sendResponse({
+												status: 'erro',
+												mensagem: `Erro ao enviar para a API:\n- ${errorMessages}`
+											});
+										}
+										else {
+											sendResponse({
+												status: 'erro',
+												mensagem: `Erro ao enviar para a API:\n- ${err.message}`
+											});
+										}
+									} 
+									catch (parseError) {
+										sendResponse({
+											status: 'erro',
+											mensagem: `Erro ao enviar para a API:\n- ${err.message}`
+										});
+									}
 								});
                         });
                     });
