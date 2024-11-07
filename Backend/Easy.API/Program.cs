@@ -62,10 +62,12 @@ builder.Services.AddMediatR(t => t.RegisterServicesFromAssembly(typeof(Cadastrar
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowChromeExtension", builder =>
+    options.AddPolicy("AllowLocalhostAndChromeExtension", builder =>
     {
         builder
-            .WithOrigins("chrome-extension://ineffafedhljcjhecomdkajcemhkplfk")
+            .SetIsOriginAllowed(origin =>
+                new Uri(origin).Host == "localhost" ||
+                origin == "chrome-extension://ineffafedhljcjhecomdkajcemhkplfk")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -128,5 +130,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowLocalhostAndChromeExtension");
 
 app.Run();

@@ -21,6 +21,8 @@
 </template>
 
 <script>
+    import { login } from '@/services/auth.js';
+
     export default {
         data() {
             return {
@@ -32,11 +34,45 @@
             };
         },
         methods: {
-            handleLogin() {
-                // Adicione a l�gica de login aqui
-                console.log('Formul�rio de login enviado:', this.loginForm);
+            async handleLogin() {
+                try {
+                    const response = await login(this.loginForm.email, this.loginForm.senha);
+                    console.log(response);
+                    
+                    if (response.data.token) {
+                        // 1. Armazena o token na sessionStorage
+                        sessionStorage.setItem('authToken', response.data.token);
+                        
+                        // 2. Envia o token para a extensão salvar no chrome.storage.local
+                        //console.log("Tentando enviar mensagem para salvar o token na extensão");
+                        //chrome.runtime.sendMessage(
+                        //    {
+                        //        action: 'saveToken',
+                        //        token: response.data.token,
+                        //    },
+                        //    (response) => {
+                        //        if (response && response.status === 'sucesso') {
+                        //            console.log("Token salvo no chrome.storage.local pela extensão");
+                        //        } else {
+                        //            console.error("Erro ao salvar token na extensão");
+                        //        }
+                        //    }
+                        //);
+                        
+                        // 3. Feedback ao usuário
+                        alert('Login realizado com sucesso!');
+                        
+                        // Redirecionar ou fazer algo após o login bem-sucedido
+                        // Exemplo: this.$router.push('/dashboard');
+                    }
+                } catch (error) {
+                    console.error('Erro ao fazer login:', error);
+                    alert('Usuário ou senha inválidos.');
+                }
             },
-        },
+        }
+
+
     };
 </script>
 
