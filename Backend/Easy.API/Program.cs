@@ -5,6 +5,7 @@ using Easy.Application.Validators;
 using Easy.Core.Repository;
 using Easy.Infrastructure.Persistence;
 using Easy.Infrastructure.Persistence.Repository;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -75,11 +76,12 @@ builder.Services.AddCors(options =>
 });
 
 //FluentValidation
-builder.Services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CadastrarUsuarioCommandValidator>());
+builder.Services.AddValidatorsFromAssemblyContaining<CadastrarUsuarioCommandValidator>();
 
 // Configuração JWT
-var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtConfig:Secret"]);
+var secret = builder.Configuration["JwtConfig:Secret"] ?? throw new ArgumentNullException("JwtConfig:Secret", "A chave JWT não foi configurada.");
+var key = Encoding.ASCII.GetBytes(secret);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -9,7 +9,7 @@
                     <el-input v-model="loginForm.email" placeholder="Inserir seu email" prefix-icon="el-icon-user"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input type="password" v-model="loginForm.senha" placeholder="Insira sua senha" prefix-icon="el-icon-lock"></el-input>
+                    <el-input type="password" v-model="loginForm.senha" placeholder="Insira sua senha" prefix-icon="el-icon-lock" @keyup.enter="handleLogin"></el-input>
                 </el-form-item>
                 <el-form-item class="login-button-container">
                     <el-button type="primary" @click="handleLogin" class="login-button">Entrar</el-button>
@@ -37,7 +37,7 @@
             async handleLogin() {
                 try {
                     const response = await login(this.loginForm.email, this.loginForm.senha);
-                    console.log(response);
+                    console.log("resposta do login:", response);
                     
                     if (response.data.token) {
                         // 1. Armazena o token na sessionStorage
@@ -63,7 +63,7 @@
                         alert('Login realizado com sucesso!');
                         
                         // Redirecionar ou fazer algo após o login bem-sucedido
-                        // Exemplo: this.$router.push('/dashboard');
+                        this.$router.push('/recrutamento');
                     }
                 } catch (error) {
                     console.error('Erro ao fazer login:', error);

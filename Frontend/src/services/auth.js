@@ -1,18 +1,16 @@
 import axios from 'axios';
+import { BASE_URL } from '@/config';
 
-// Configuração da base URL
 const apiClient = axios.create({
-  baseURL: 'https://localhost:8000',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Função de login
 export const login = (email, senha) => {
     return apiClient.post('/api/v1/auth/login', {
         email,
         senha
     });
 };
-

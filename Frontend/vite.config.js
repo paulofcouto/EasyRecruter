@@ -1,11 +1,10 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
+import { BASE_URL } from './src/config';
 
 export default defineConfig({
-  plugins: [
-    vue(),
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -14,10 +13,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://localhost:8000', // URL do seu backend
-        changeOrigin: true, // Necessário para CORS
-        secure: false, // Se o backend usa HTTPS com certificado auto-assinado
+        target: BASE_URL,
+        changeOrigin: true,
+        secure: false,
       },
     },
   },
-})
+});

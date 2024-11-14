@@ -1,19 +1,15 @@
 <template>
-    <el-container>
-        <Login />
-    </el-container>
+  <el-container>
+    <router-view /> 
+  </el-container>
 </template>
 
 <script>
-import Login from './components/Login.vue'
-
 export default {
-  components: {
-    Login,
-  },
+  name: 'App'
 }
 </script>
 
 <style scoped>
-    @import 'element-plus/dist/index.css';
+@import 'element-plus/dist/index.css';
 </style>
