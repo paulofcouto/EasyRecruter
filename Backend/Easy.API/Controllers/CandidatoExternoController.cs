@@ -1,10 +1,12 @@
 ﻿using Easy.Application.Commands.SalvarDadosCandidato;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Easy.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class CandidatoExternoController : ControllerBase
     {
         private readonly IMediator _mediator;

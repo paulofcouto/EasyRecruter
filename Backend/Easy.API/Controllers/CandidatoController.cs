@@ -6,12 +6,14 @@ using Easy.Application.Queries.ObterCandidatosUsuarioLogado;
 using Easy.Application.ViewModel;
 using Easy.Core.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Easy.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class CandidatoController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -36,8 +38,7 @@ namespace Easy.API.Controllers
 
             return Ok(result.Value);
         }
-        
-        //GET: api/candidato/5
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CandidatoDetalhadoViewModel>> Get([FromRoute] string id)
         {
@@ -52,8 +53,7 @@ namespace Easy.API.Controllers
 
             return Ok(result.Value);
         }
-        
-        // POST: api/Candidato
+
         [HttpPost]
         public async Task<ActionResult<Candidato>> Post([FromBody] CadastrarCandidatoCommand command)
         {
@@ -74,7 +74,6 @@ namespace Easy.API.Controllers
             }
         }
 
-        // PUT: api/Candidato/5
         [HttpPut("{id}")]
         public async Task<ActionResult<Candidato>> Put([FromRoute] string id, [FromBody] EditarCandidatoCommand command)
         {
@@ -96,18 +95,15 @@ namespace Easy.API.Controllers
                 return StatusCode(500, "Ocorreu um erro inesperado ao editar o candidato.");
             }
         }
-        
-        // DELETE: api/Candidato/5
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] string id)
         {
-            var command = new DeletarCandidatoCommand(id);
-
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new DeletarCandidatoCommand(id));
         
             if (!result.IsSuccess)
             {
-                return NotFound();
+                return NotFound(result.Error);
             }
         
             return NoContent();
