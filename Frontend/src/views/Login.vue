@@ -76,16 +76,7 @@
     };
 </script>
 
-<style>
-    body {
-        margin: 0;
-        background: #f0f2f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
+<style scoped>
     .login-container {
         display: flex;
         justify-content: center;
@@ -103,7 +94,7 @@
         width: 100%;
         max-width: 400px;
     }
-
+    
     .login-logo {
         width: 150px;
         margin-bottom: 20px;
