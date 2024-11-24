@@ -34,7 +34,7 @@ namespace Easy.Application.Queries.ObterCandidatosUsuarioLogado
                 return Result<List<CandidatoViewModel>>.Fail("Nenhum candidato encontrado para o usuário logado.");
             }
 
-            var candidatosViewModel = candidatos.Select(c => new CandidatoViewModel(c.Id, c.UrlPublica, c.DescricaoProfissional, c.Nome)).ToList();
+            var candidatosViewModel = candidatos.Select(c => new CandidatoViewModel(c.Id, c.UrlPublica, c.DescricaoProfissional, c.Nome, c.Sobre)).ToList();
 
             return Result<List<CandidatoViewModel>>.Ok(candidatosViewModel);
         }

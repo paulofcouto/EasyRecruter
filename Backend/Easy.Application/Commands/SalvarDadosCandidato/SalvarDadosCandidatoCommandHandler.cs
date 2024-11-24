@@ -39,39 +39,56 @@ namespace Easy.Application.Commands.SalvarDadosCandidato
                 return Result.Fail("Usuário não identificado no token.");
             }
 
-            var listaExperiencias = new List<Candidato.Experiencia>();
-
-            foreach(var experiencia in request.Experiencias)
-            {
-                var listaCargos = new List<Candidato.Cargo>();
-
-                foreach (var cargo in experiencia.Cargos)
+            var listaExperiencias = request.Experiencias?
+                .Select(experiencia =>
                 {
-                    StringHelpers.ExtrairDatasLinkedin(cargo.Periodo, out DateTime dataInicial, out DateTime dataFinal);
+                    var listaCargos = experiencia.Cargos?
+                        .Select(cargo =>
+                        {
+                            if (!string.IsNullOrEmpty(cargo.Periodo))
+                            {
+                                StringHelpers.ExtrairDatasLinkedin(cargo.Periodo, out DateTime dataInicial, out DateTime dataFinal);
+                                return new Candidato.Cargo(
+                                    cargo.Titulo!,
+                                    dataInicial == DateTime.MinValue ? null : dataInicial,
+                                    dataFinal == DateTime.MinValue ? null : dataFinal,
+                                    cargo.Descricao!
+                                );
+                            }
+                            return null;
+                        })
+                        .Where(cargo => cargo != null)
+                        .ToList();
 
-                    var cargoCandidato = new Candidato.Cargo(cargo.Titulo, dataInicial, dataFinal, cargo.Descricao);
+                    return new Candidato.Experiencia(
+                        experiencia.Empresa!,
+                        experiencia.Local!,
+                        listaCargos
+                    );
+                })
+                .Where(experiencia => experiencia != null)
+                .ToList();
 
-                    listaCargos.Add(cargoCandidato);
-                }
+            var listaFormacoes = request.Formacoes?
+                .Select(formacao =>
+                {
+                    if (!string.IsNullOrEmpty(formacao.Periodo))
+                    {
+                        StringHelpers.ExtrairDatasLinkedin(formacao.Periodo, out DateTime dataInicial, out DateTime dataFinal);
+                        return new Candidato.Formacao(
+                            formacao.Instituicao,
+                            formacao.Curso,
+                            dataInicial == DateTime.MinValue ? null : dataInicial,
+                            dataFinal == DateTime.MinValue ? null : dataFinal
+                        );
+                    }
+                    return null;
+                })
+                .Where(formacao => formacao != null)
+                .ToList();
 
-                var expecienciaCandidato = new Candidato.Experiencia(experiencia.Empresa, experiencia.Local, listaCargos);
 
-                listaExperiencias.Add(expecienciaCandidato);
-            }
-
-            var listaFormacoes = new List<Candidato.Formacao>();
-
-            foreach (var formacao in request.Formacoes)
-            {
-                StringHelpers.ExtrairDatasLinkedin(formacao.Periodo, out DateTime dataInicial, out DateTime dataFinal);
-
-                var formacaoCandidato = new Candidato.Formacao(formacao.Instituicao, formacao.Curso, dataInicial, dataFinal);
-
-                listaFormacoes.Add(formacaoCandidato);
-
-            }
-
-            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
+            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, Convert.FromBase64String(request.Foto), request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
 
             await _candidatoRepository.CadastrarAssincrono(candidato);
 

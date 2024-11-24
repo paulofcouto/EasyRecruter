@@ -52,6 +52,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                                 nome: response.dadosCapturados.nome,
                                 descricaoProfissional: response.dadosCapturados.descricaoProfissional,
                                 sobre: response.dadosCapturados.sobre,
+								foto: response.dadosCapturados.foto,
                                 experiencias: response.dadosCapturados.experiencias.map(exp => ({
                                     empresa: exp.empresa,
                                     local: exp.local,

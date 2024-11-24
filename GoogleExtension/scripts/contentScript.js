@@ -1,19 +1,21 @@
-function capturarPerfilCompleto() {
+async function capturarPerfilCompleto() {
   const perfil = {};
 
   perfil.URL = window.location.href;
 
   const nomeElement = document.querySelector('.v-align-middle.break-words');
-  perfil.nome = nomeElement ? nomeElement.innerText.trim() : 'Nome não encontrado';
+  perfil.nome = nomeElement ? nomeElement.innerText.trim() : '';//'Nome não encontrado';
 
   const cargoElemento = document.querySelector('.text-body-medium.break-words');
-  perfil.descricaoProfissional = cargoElemento ? cargoElemento.innerText.trim() : 'Descrição profissional não encontrado';
+  perfil.descricaoProfissional = cargoElemento ? cargoElemento.innerText.trim() : '';//'Descrição profissional não encontrado';
 
   perfil.sobre = capturarTextoSobre();
 
   perfil.experiencias = capturarExperiencias();
 
   perfil.formacaoAcademica = capturarFormacaoAcademica();
+  
+  perfil.foto = await capturarFoto();
 
   return perfil;
 }
@@ -58,7 +60,7 @@ function capturarExperiencias() {
 
           if (hasMultipleCargos) {
             const empresaElement = li.querySelector('.display-flex.align-items-center.mr1.hoverable-link-text.t-bold span.visually-hidden');
-			experiencia.empresa = empresaElement ? empresaElement.innerText.trim() : 'Empresa não encontrada';
+			experiencia.empresa = empresaElement ? empresaElement.innerText.trim() : '';//'Empresa não encontrada';
 
 			const localElement = Array.from(li.querySelectorAll('.t-14.t-normal.t-black--light'))
 			  .map(span => {
@@ -72,7 +74,7 @@ function capturarExperiencias() {
 			  })
 			  .filter(span => span !== null)
 			  .pop();
-			experiencia.local = localElement ? localElement.innerText.trim() : 'Local não encontrado';
+			experiencia.local = localElement ? localElement.innerText.trim() : '';//'Local não encontrado';
 
 			experiencia.cargos = [];
 
@@ -84,13 +86,13 @@ function capturarExperiencias() {
 			  const cargo = {};
 
 			  const tituloElement = subLi.querySelector('.display-flex.align-items-center.mr1.hoverable-link-text.t-bold span[aria-hidden="true"]');
-			  cargo.titulo = tituloElement ? tituloElement.innerText.trim() : 'Cargo não encontrado';
+			  cargo.titulo = tituloElement ? tituloElement.innerText.trim() : '';//'Cargo não encontrado';
 
 			  const periodoElement = subLi.querySelector('.t-14.t-normal.t-black--light span.visually-hidden');
-			  cargo.periodo = periodoElement ? periodoElement.innerText.trim() : 'Período não encontrado';
+			  cargo.periodo = periodoElement ? periodoElement.innerText.trim() : '';//'Período não encontrado';
 
 			  const descricaoElement = subLi.querySelector('.full-width.t-14.t-normal.t-black.display-flex.align-items-center span.visually-hidden');
-			  cargo.descricao = descricaoElement ? descricaoElement.innerText.trim() : 'Descrição não encontrada';
+			  cargo.descricao = descricaoElement ? descricaoElement.innerText.trim() : '';//'Descrição não encontrada';
 
 			  if (cargo.titulo && cargo.periodo && cargo.descricao) {
 			    experiencia.cargos.push(cargo);
@@ -98,14 +100,14 @@ function capturarExperiencias() {
 			});
           } 
 		  else {
-			experiencia.empresa = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal span.visually-hidden')?.innerText.trim() || 'Empresa não encontrada';
+			experiencia.empresa = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal span.visually-hidden')?.innerText.trim() || '';//'Empresa não encontrada';
             
-			experiencia.local = li.querySelectorAll('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')[1]?.innerText.trim() || 'Local não encontrado';
+			experiencia.local = li.querySelectorAll('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')[1]?.innerText.trim() || '';//'Local não encontrado';
 			
 			experiencia.cargos = [{
-              titulo: li.querySelector('.display-flex.align-items-center.mr1.t-bold span.visually-hidden')?.innerText.trim() || 'Cargo não encontrado',
-              periodo: li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')?.innerText.trim() || 'Período não encontrado',
-              descricao: li.querySelector('.pvs-entity__sub-components span.visually-hidden')?.innerText.trim() || 'Descrição não encontrada'
+              titulo: li.querySelector('.display-flex.align-items-center.mr1.t-bold span.visually-hidden')?.innerText.trim() || '',//'Cargo não encontrado',
+              periodo: li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden')?.innerText.trim() || '',//'Período não encontrado',
+              descricao: li.querySelector('.pvs-entity__sub-components span.visually-hidden')?.innerText.trim() || ''//'Descrição não encontrada'
             }];
           }
 		  
@@ -118,8 +120,6 @@ function capturarExperiencias() {
   return experiencias;
 }
 
-
-// Função para capturar a Formação Acadêmica
 function capturarFormacaoAcademica() {
   const formacaoAcademica = [];
   const sectionFormacao = Array.from(document.querySelectorAll('section.artdeco-card.pv-profile-card.break-words.mt2'))
@@ -138,15 +138,15 @@ function capturarFormacaoAcademica() {
 
           // Captura a Instituição
           const instituicaoElement = li.querySelector('.display-flex.align-items-center.mr1.t-bold span.visually-hidden');
-          formacao.instituicao = instituicaoElement ? instituicaoElement.innerText.trim() : 'Instituição não encontrada';
+          formacao.instituicao = instituicaoElement ? instituicaoElement.innerText.trim() : '';//'Instituição não encontrada';
 
           // Captura o Curso
           const cursoElement = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal span.visually-hidden');
-          formacao.curso = cursoElement ? cursoElement.innerText.trim() : 'Curso não encontrado';
+          formacao.curso = cursoElement ? cursoElement.innerText.trim() : '';//'Curso não encontrado';
 
           // Captura o Período
           const periodoElement = li.querySelector('.display-flex.flex-column.full-width .t-14.t-normal.t-black--light span.visually-hidden');
-          formacao.periodo = periodoElement ? periodoElement.innerText.trim() : 'Período não encontrado';
+          formacao.periodo = periodoElement ? periodoElement.innerText.trim() : '';//'Período não encontrado';
 
           formacaoAcademica.push(formacao);
         });
@@ -156,9 +156,42 @@ function capturarFormacaoAcademica() {
   return formacaoAcademica;
 }
 
+async function capturarFoto() {
+	const primarySelector = 'button.pv-top-card-profile-picture__container';
+    const fallbackSelector = 'button.profile-photo-edit__edit-btn';
+
+    let buttonElement = document.querySelector(primarySelector);
+
+    if (!buttonElement) {
+        buttonElement = document.querySelector(fallbackSelector);
+    }
+
+    if (!buttonElement) return '';
+
+    const imgElement = buttonElement.querySelector('img');
+
+    if (!imgElement || !imgElement.src) return '';
+
+    const response = await fetch(imgElement.src);
+    if (!response.ok) return '';
+
+    const blob = await response.blob();
+    const reader = new FileReader();
+
+    return new Promise((resolve) => {
+        reader.onloadend = () => resolve(reader.result || '');
+        reader.readAsDataURL(blob); // Converte para Base64
+    });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'captureData') {
-    const perfil = capturarPerfilCompleto();
-    sendResponse({ dadosCapturados: perfil });
-  }
+    if (message.action === 'captureData') {
+        capturarPerfilCompleto().then((perfil) => {
+            sendResponse({ dadosCapturados: perfil });
+        }).catch((err) => {
+            console.error('Erro ao capturar perfil:', err);
+            sendResponse({ dadosCapturados: null });
+        });
+        return true;
+    }
 });

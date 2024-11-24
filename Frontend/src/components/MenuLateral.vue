@@ -1,5 +1,10 @@
 <template>
   <div :class="['sidebar', { expanded: isExpanded }]">
+    <div class="logo-container">
+      <img src="@/assets/logo.png" alt="Logo" class="logo" />
+      <span v-if="isExpanded" class="tituloSistema">Easy Recruter</span>
+    </div>
+    <div class="divider"></div>
     <ul>
       <li v-for="item in menuItems" :key="item.id" @click="navigate(item.route)">
         <el-icon>
@@ -8,6 +13,7 @@
         <span v-if="isExpanded">{{ item.label }}</span>
       </li>
     </ul>
+    <div class="divider"></div>
     <button class="toggle-btn" @click="toggleSidebar">
       <component :is="isExpanded ? 'Fold' : 'Expand'" />
     </button>
@@ -15,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Suitcase, InfoFilled, Lightning, Expand, Fold } from "@element-plus/icons-vue";
 
@@ -39,6 +45,7 @@ const toggleSidebar = () => {
 const navigate = (route) => {
   router.push(route);
 };
+
 </script>
 
 <style scoped>
@@ -47,15 +54,15 @@ const navigate = (route) => {
   background-color: #2c3e50;
   color: white;
   height: 100vh;
-  transition: width 0.3s ease;
   overflow: hidden;
   position: fixed;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  transition: width 0.3s ease;
 }
 
-.sidebar .el-icon  {
+.sidebar .el-icon {
   font-size: 20px;
   width: 20px;
   height: 20px;
@@ -64,23 +71,12 @@ const navigate = (route) => {
   vertical-align: middle;
 }
 
-
 .sidebar.expanded {
   width: 240px;
 }
 
-.sidebar.expanded .el-icon  {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-
 .sidebar.expanded .el-icon {
-  margin-right: 10px; 
-}
-
-.sidebar:not(.expanded) .el-icon {
-  margin-right: 0; 
+  margin-right: 10px;
 }
 
 .sidebar ul {
@@ -105,6 +101,8 @@ const navigate = (route) => {
 
 .sidebar span {
   display: none;
+  transition: width 0.3s ease;
+  white-space: nowrap;
 }
 
 .sidebar.expanded span {
@@ -112,12 +110,11 @@ const navigate = (route) => {
 }
 
 .toggle-btn {
-  margin: 0;
-  margin-right: 10px;
+  margin: 0 10px 0 0;
   padding: 10px;
   background: none;
   border: none;
-  color: rgb(255, 255, 255);
+  color: white;
   cursor: pointer;
   font-size: 20px;
   display: flex;
@@ -125,7 +122,7 @@ const navigate = (route) => {
   align-items: center;
   width: 40px;
   height: 40px;
-  transition: color 0.3s, margin 0.3s; 
+  transition: color 0.3s, margin 0.3s;
 }
 
 .sidebar.expanded .toggle-btn {
@@ -133,4 +130,32 @@ const navigate = (route) => {
   justify-content: flex-end;
 }
 
+.divider {
+  width: 50%;
+  height: 1px;
+  background-color: #ffffff;
+  margin: 10px auto;
+  transition: width 0.3s ease;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  height: 55px;
+  padding: 10px;
+  width: 100%;
+}
+
+.logo {
+  transition: transform 0.3s ease;
+  width: 40px;
+}
+
+.tituloSistema {
+  display: flex;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-left: 10px;
+}
 </style>

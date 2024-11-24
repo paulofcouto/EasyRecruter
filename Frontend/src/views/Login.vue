@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import { login } from '@/services/auth.js';
+    import { login } from '@/services/authServices.js';
 
     export default {
         data() {

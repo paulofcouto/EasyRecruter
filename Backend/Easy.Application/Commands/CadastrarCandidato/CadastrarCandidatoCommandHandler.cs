@@ -67,7 +67,7 @@ namespace Easy.Application.Commands.CadastrarCandidato
 
             }
 
-            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
+            var candidato = new Candidato(idUsuario, request.UrlPublica, request.Nome, request.DescricaoProfissional, null, request.Sobre.Replace("<!---->", ""), listaExperiencias, listaFormacoes);
 
             await _candidatoRepository.CadastrarAssincrono(candidato);
 

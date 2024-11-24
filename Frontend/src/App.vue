@@ -28,10 +28,8 @@ import "./assets/main.css";
 import MenuLateral from "@/components/MenuLateral.vue";
 import MenuSuperior from "@/components/MenuSuperior.vue";
 
-// Estado do menu lateral
 const isSidebarExpanded = ref(false);
 
-// Função para alternar o estado do menu lateral
 const toggleSidebar = () => {
   isSidebarExpanded.value = !isSidebarExpanded.value;
 };
@@ -39,24 +37,23 @@ const toggleSidebar = () => {
 
 
 <style scoped>
-/* Estilos do layout principal */
 .el-container {
-  display: flex; /* Define layout flex para ajustar os elementos */
-  height: 100vh; /* Altura total */
+  display: flex; 
+  height: 100vh;
 }
 
 .el-aside {
-  width: 60px; /* Largura do menu contraído */
-  transition: width 0.3s ease; /* Transição suave para expansão */
+  width: 60px;
+  transition: width 0.3s ease;
 }
 
 .el-aside.expanded {
-  width: 240px; /* Largura do menu expandido */
+  width: 240px;
 }
 
 .el-main {
-  flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
+  flex: 1;
   padding: 20px;
-  transition: margin-left 0.3s ease; /* Suaviza o ajuste */
+  transition: margin-left 0.3s ease;
 }
 </style>
