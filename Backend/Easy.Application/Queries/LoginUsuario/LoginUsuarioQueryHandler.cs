@@ -9,9 +9,9 @@ namespace Easy.Application.Queries.LoginUsuario
     public class LoginUsuarioQueryHandler : IRequestHandler<LoginUsuarioQuery, Result<AuthResponse>>
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IJwtTokenGeneratorService _jwtTokenGenerator;
 
-        public LoginUsuarioQueryHandler(IUsuarioRepository usuarioRepository, IJwtTokenGenerator jwtTokenGenerator)
+        public LoginUsuarioQueryHandler(IUsuarioRepository usuarioRepository, IJwtTokenGeneratorService jwtTokenGenerator)
         {
             _usuarioRepository = usuarioRepository;
             _jwtTokenGenerator = jwtTokenGenerator;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Easy.Application.Interfaces
 {
-    public interface IJwtTokenGenerator
+    public interface IJwtTokenGeneratorService
     {
         string GenerateToken(Usuario usuario);
     }

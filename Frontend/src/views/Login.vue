@@ -1,23 +1,31 @@
 <template>
     <div class="login-container">
-        <div class="login-form">
-            <img src="@/assets/logo.png" alt="Logo" class="login-logo" />
-            <h1><a style="color:#0076df">Easy</a> Recruter</h1>
-            <h3 class="login-title">Seja bem-vindo</h3>
-            <el-form :model="loginForm" @submit.prevent="handleLogin">
-                <el-form-item>
-                    <el-input v-model="loginForm.email" placeholder="Inserir seu email" prefix-icon="el-icon-user"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input type="password" v-model="loginForm.senha" placeholder="Insira sua senha" prefix-icon="el-icon-lock" @keyup.enter="handleLogin"></el-input>
-                </el-form-item>
-                <el-form-item class="login-button-container">
-                    <el-button type="primary" @click="handleLogin" class="login-button">Entrar</el-button>
-                </el-form-item>
-            </el-form>
-            <el-link href="#" class="forgot-password">Esqueceu sua senha?</el-link>
+        <div class="login-content">
+            <div class="login-form">
+                <img src="@/assets/logo.png" alt="Logo" class="login-logo" />
+                <h1 class="sistema-title"><a style="color:#0076df">Easy</a> Recruter</h1>
+                <h3 class="login-title">Seja bem-vindo</h3>
+                <el-form :model="loginForm" @submit.prevent="handleLogin">
+                    <el-form-item>
+                        <el-input v-model="loginForm.email" placeholder="Inserir seu email" prefix-icon="el-icon-user"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input type="password" v-model="loginForm.senha" placeholder="Insira sua senha" prefix-icon="el-icon-lock" @keyup.enter="handleLogin"></el-input>
+                    </el-form-item>
+                    <el-form-item class="login-button-container">
+                        <el-button type="primary" @click="handleLogin" class="login-button">Entrar</el-button>
+                    </el-form-item>
+                </el-form>
+                <el-link href="#" class="forgot-password">Esqueceu sua senha?</el-link>
+            </div>
+
+            <!-- Card de Cadastro -->
+            <div class="register-card">
+                <p>Não tem uma conta? <el-link href="/cadastroUsuario" class="register-link">Cadastre-se</el-link></p>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -83,27 +91,40 @@
         align-items: center;
         height: 100vh;
         width: 100%;
+        background-color: #f4f6f8;
     }
 
-    .login-form {
+    .login-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .login-form,
+    .register-card {
         background: #fff;
-        padding: 40px 20px;
+        padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
         width: 100%;
         max-width: 400px;
     }
-    
+
     .login-logo {
         width: 150px;
         margin-bottom: 20px;
     }
 
+    .sistema-title{
+        font-size: 24px;
+    }
+
     .login-title {
         margin-bottom: 20px;
         color: #333;
-        font-size: 24px;
     }
 
     .login-button-container {
@@ -119,13 +140,23 @@
     .change-password {
         display: block;
         margin-top: 10px;
-    }
-
-    .forgot-password {
         color: #007bff;
     }
 
-    .change-password {
+    .register-card {
+        margin-top: 20px;
+        background: #f9f9f9;
+    }
+
+    .register-card p {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .register-link {
         color: #007bff;
+        font-weight: bold;
+        font-size: 14px;
     }
 </style>

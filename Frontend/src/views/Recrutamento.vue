@@ -18,7 +18,7 @@
         <el-card class="candidato-card" shadow="hover">
           <div class="card-content">
             <img
-              src="https://via.placeholder.com/80"
+              :src="candidato.foto || 'https://via.placeholder.com/80'"
               alt="Foto do candidato"
               class="candidato-foto"
             />
@@ -100,11 +100,12 @@ onMounted(() => {
 
 .card-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
 }
 
 .candidato-foto {
+  margin-top: 10px;
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -135,4 +136,6 @@ onMounted(() => {
 .card-col {
   margin-bottom: 20px;
 }
+
+
 </style>

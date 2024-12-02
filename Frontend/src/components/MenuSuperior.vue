@@ -1,12 +1,16 @@
 <template>
     <header class="header">
-      <h1>Sistema de Recrutamento</h1>
+      <h1>{{ title }}</h1>
     </header>
   </template>
   
 <script setup>
 defineProps({
   name: "MenuSuperior",
+  title: {
+    type: String,
+    default: "Sistema de Recrutamento",
+  }
 });
 </script>
 

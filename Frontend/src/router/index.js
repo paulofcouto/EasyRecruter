@@ -21,19 +21,19 @@ const routes = [
     path: '/recrutamento',
     name: 'Recrutamento',
     component: Recrutamento,
-    meta: { showMenu: true, showHeader: true  },
+    meta: { showMenu: true, showHeader: true, title: 'Recrutamento' },
   },
   {
     path: "/sobre",
     name: "Sobre",
     component: Sobre,
-    meta: { showMenu: true, showHeader: true  },
+    meta: { showMenu: true, showHeader: true, title: 'Sobre'  },
   },
   {
     path: "/sugestoes",
     name: "Sugestões",
     component: Sugestoes,
-    meta: { showMenu: true, showHeader: true  },
+    meta: { showMenu: true, showHeader: true, title: 'Sugestões'   },
   },
 ];
 

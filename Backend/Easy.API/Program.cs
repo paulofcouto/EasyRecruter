@@ -1,6 +1,6 @@
 using Easy.Application.Commands.CadastrarCandidato;
 using Easy.Application.Interfaces;
-using Easy.Application.Services;
+using Easy.Application.Services.Autenticacao;
 using Easy.Application.Validators;
 using Easy.Core.Repository;
 using Easy.Infrastructure.Persistence;
@@ -52,7 +52,8 @@ builder.Services.AddSwaggerGen(c =>
 //Repository
 builder.Services.AddScoped<ICandidatoRepository, CandidatoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 //Banco de dados
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
@@ -136,3 +137,4 @@ app.MapControllers();
 app.UseCors("AllowLocalhostAndChromeExtension");
 
 app.Run();
+

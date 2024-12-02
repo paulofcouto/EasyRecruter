@@ -6,13 +6,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 
-namespace Easy.Application.Services
+namespace Easy.Application.Services.Autenticacao
 {
-    public class JwtTokenGenerator : IJwtTokenGenerator
+    public class JwtTokenGeneratorService : IJwtTokenGeneratorService
     {
         private readonly string _secret;
 
-        public JwtTokenGenerator(IConfiguration configuration)
+        public JwtTokenGeneratorService(IConfiguration configuration)
         {
             _secret = configuration["JwtConfig:Secret"];
         }

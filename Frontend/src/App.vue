@@ -12,10 +12,10 @@
     <!-- Conteúdo Principal -->
     <el-container style="flex-direction: column; flex: 1;">
       <!-- Cabeçalho -->
-      <MenuSuperior v-if="$route.meta.showHeader" />
+      <MenuSuperior v-if="$route.meta.showHeader" :title="$route.meta.title"/>
 
       <!-- Área de Conteúdo -->
-      <el-main style="padding: 20px;">
+      <el-main :class="{ 'no-scroll': $route.path === '/login' }">
         <router-view />
       </el-main>
     </el-container>
@@ -53,7 +53,10 @@ const toggleSidebar = () => {
 
 .el-main {
   flex: 1;
-  padding: 20px;
   transition: margin-left 0.3s ease;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 </style>
