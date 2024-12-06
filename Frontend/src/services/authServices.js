@@ -12,3 +12,13 @@ export const login = async (email, senha) => {
     throw error;
   }
 };
+
+export const cadastrar = async (email, senha) => {
+  try {
+    const response = await apiClient.post('/api/v1/Usuario/cadastrar', { email, senha });
+    return response; // Retorna a resposta em caso de sucesso
+  } catch (error) {
+    console.error('Erro no cadastro:', error.response?.data || error.message);
+    throw error; // Lança o erro para ser tratado no componente
+  }
+};

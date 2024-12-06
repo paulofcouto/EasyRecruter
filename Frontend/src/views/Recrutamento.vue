@@ -8,7 +8,7 @@
       </el-input>
     </div>
 
-    <el-row v-if="filteredCandidatos.length > 0" gutter="20">
+    <el-row v-if="filteredCandidatos.length > 0" :gutter="20">
       <el-col
         v-for="candidato in filteredCandidatos"
         :key="candidato.id"
@@ -136,6 +136,4 @@ onMounted(() => {
 .card-col {
   margin-bottom: 20px;
 }
-
-
 </style>
