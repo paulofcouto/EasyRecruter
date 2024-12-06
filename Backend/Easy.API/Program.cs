@@ -6,18 +6,16 @@ using Easy.Core.Repository;
 using Easy.Infrastructure.Persistence;
 using Easy.Infrastructure.Persistence.Repository;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Injeção de Dependência
-
 builder.Services.AddControllers();
-
 
 //Swagger
 builder.Services.AddSwaggerGen(c =>
@@ -56,7 +54,24 @@ builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>(
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 //Banco de dados
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+var environment = builder.Environment;
+
+if (environment.IsDevelopment())
+{
+    builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+}
+else
+{
+    var mongoConnectionString = SecretManagerHelper.GetSecret("mongo-connection-string");
+    var databaseName = builder.Configuration["MongoDbSettings:DatabaseName"] ?? throw new ArgumentNullException("MongoDbSettings:DatabaseName", "A configuração de banco de dados é inválida.");
+
+    builder.Services.Configure<MongoDbSettings>(options =>
+    {
+        options.ConnectionString = mongoConnectionString;
+        options.DatabaseName = databaseName;
+    });
+}
+
 builder.Services.AddSingleton<EasyDbContext>();
 
 //Mediator
