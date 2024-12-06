@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Salvar URL",
+  "name": "Salvar Perfil",
   "version": "1.0",
-  "description" : "Salva dados da URL atual no Easy Recruter",
+  "description" : "Extensão para enviar informações de candidatos para o banco de dados do Easy Recruter.",
   "permissions": [
     "activeTab",  
     "scripting",
