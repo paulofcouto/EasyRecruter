@@ -54,23 +54,24 @@ builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>(
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 //Banco de dados
-var environment = builder.Environment;
-
-if (environment.IsDevelopment())
-{
-    builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
-}
-else
-{
-    var mongoConnectionString = SecretManagerHelper.GetSecret("mongo-connection-string");
-    var databaseName = builder.Configuration["MongoDbSettings:DatabaseName"] ?? throw new ArgumentNullException("MongoDbSettings:DatabaseName", "A configuração de banco de dados é inválida.");
-
-    builder.Services.Configure<MongoDbSettings>(options =>
-    {
-        options.ConnectionString = mongoConnectionString;
-        options.DatabaseName = databaseName;
-    });
-}
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+//var environment = builder.Environment;
+//
+//if (environment.IsDevelopment())
+//{
+//    builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+//}
+//else
+//{
+//    var mongoConnectionString = SecretManagerHelper.GetSecret("mongo-connection-string");
+//    var databaseName = builder.Configuration["MongoDbSettings:DatabaseName"] ?? throw new ArgumentNullException("MongoDbSettings:DatabaseName", "A configuração de banco de dados é inválida.");
+//
+//    builder.Services.Configure<MongoDbSettings>(options =>
+//    {
+//        options.ConnectionString = mongoConnectionString;
+//        options.DatabaseName = databaseName;
+//    });
+//}
 
 builder.Services.AddSingleton<EasyDbContext>();
 
