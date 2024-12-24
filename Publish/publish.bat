@@ -17,7 +17,7 @@ rd /s /q "%~dp0\..\Frontend\dist\"
 
 echo.
 echo Limpando a pasta out...
-rd /s /q "%~dp0\..\Publish\out\"
+rd /s /q "%~dp0\..\Publish\deploy\"
 
 echo.
 echo Construindo o front-end...
@@ -38,9 +38,9 @@ xcopy /s /e /y /h /r /f "%~dp0\..\Frontend\dist\*.*" "%~dp0\..\Backend\wwwroot\"
 echo.
 echo Gerando o projeto de backend...
 pushd "%~dp0\..\Backend"
-dotnet publish -c Release -o "%~dp0\..\Publish\out"
+dotnet publish -c Release -o "%~dp0\..\Publish\deploy"
 popd
 
 echo.
-echo Publicacao concluida! Os arquivos estao disponiveis na pasta 'out'.
+echo Publicacao concluida! Os arquivos estao disponiveis na pasta 'deploy'.
 pause

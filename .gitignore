@@ -13,7 +13,7 @@
 #Ignorando arquivos de publicação
 Backend/wwwroot/
 Frontend/dist/
-Publish/out/
+Publish/deploy/
 !Publish/publish.bat
 
 # User-specific files (MonoDevelop/Xamarin Studio)
